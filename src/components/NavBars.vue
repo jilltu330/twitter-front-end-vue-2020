@@ -46,19 +46,6 @@ export default {
   },
   props: {
     page: String,
-    // navItems: {
-    //   type: Array,
-    //   default() {
-    //     return [
-    //       {
-    //         name: 'index',
-    //         text: '首頁',
-    //         to: '/',
-    //         icon: () => import('@/components/icon/NavHome.vue'),
-    //       },
-    //     ]
-    //   },
-    // },
     isAdmin: {
       type: Boolean,
       default: false,
