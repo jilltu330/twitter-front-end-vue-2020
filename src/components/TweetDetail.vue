@@ -1,33 +1,35 @@
 <template>
   <div id="tweetdetail">
     <div class="tweet-header">
+      <router-link :to="{ name: 'profile', params: { id: tweet.UserId } }">
       <img
-        src="https://loremflickr.com/240/240/?random=83.43458862610815"
-        alt="avator"
+        :src="tweet.User.avatar"
+        alt="avatar"
       />
+      </router-link>
       <div class="user-detail">
-        <span class="user-name">name</span>
-        <span class="user-account">@account</span>
+        <router-link :to="{ name: 'profile', params: { id: tweet.UserId } }">
+        <span class="user-name">{{ tweet.User.name }}</span></router-link>
+        <router-link :to="{ name: 'profile', params: { id: tweet.UserId } }">
+        <span class="user-account">{{ tweet.User.account }}</span></router-link>
       </div>
     </div>
     <div class="tweet-text">
-      Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco
-      cillum dolor. Voluptate exercitation incididunt aliquip deserunt
-      reprehenderit elit laborum.
+      {{ tweet.description }}
     </div>
     <div class="tweet-detail">
-      hk4g日期
-      <!-- <span>
+      <!-- TODO:待確認時間顯示 -->
+      <span>
         •{{
           isToday(tweet.createdAt)
             ? fromNow(utcOffset(tweet.createdAt))
             : timeFormat(utcOffset(tweet.createdAt), 'MM月DD日')
         }}
-      </span> -->
+      </span>
     </div>
     <div class="tweet-text-detail">
-      <span class="reply"> <span class="reply-count">54</span> 回覆 </span>
-      <span class="like"> <span class="like-count">5555</span> 喜歡次數 </span>
+      <span class="reply"> <span class="reply-count">{{ tweet.replyCount }}</span> 回覆</span>
+      <span class="like"> <span class="like-count">{{ tweet.likeCount }}</span> 喜歡次數</span>
     </div>
     <div class="btn btn-control">
       <div class="btn-reply">
@@ -45,6 +47,12 @@ import { fromNowFilter } from './../utils/mixins'
 
 export default {
   mixins: [fromNowFilter],
+  props: {
+    tweet: {
+      type: Object,
+      required: true,
+    },
+  },
 }
 </script>
 
