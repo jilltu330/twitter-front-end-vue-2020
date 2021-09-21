@@ -122,11 +122,11 @@ export default {
   overflow-y: scroll;
 }
 
+//TODO: 待修復 bar 不貼齊
 .scrollbar {
-  padding-left: 6px;
   // 整體的樣式
   &::-webkit-scrollbar {
-    width: 4px;
+    width: 0.25rem;
   }
   // bar的樣式
   &::-webkit-scrollbar-thumb {
