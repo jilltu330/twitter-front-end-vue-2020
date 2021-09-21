@@ -88,6 +88,8 @@
 <script>
 import NavBars from '../components/NavBars.vue'
 import NavTabs from '../components/NavTabs.vue'
+import userAPI from './../apis/user'
+import { Toast } from './../utils/helpers'
 
 const dummyUser = {
   currentUser: {
@@ -107,7 +109,12 @@ export default {
   },
   data() {
     return {
-      user: null,
+      account: '',
+      name: '',
+      email: '',
+      password: '',
+      checkPassword: '',
+      isProcessing: false,
     }
   },
   created() {
@@ -117,6 +124,23 @@ export default {
     fetchUser() {
       this.user = dummyUser.currentUser
     },
+    // async fetchUser() {
+    //  try {
+    //     const { id, account, name, email } = this.currentUser;
+    //     this.currentUser = {
+    //     ...this.currentUser,
+    //     id,
+    //     account,
+    //     name,
+    //     email,
+    //   };
+    //   } catch (error) {
+    //     Toast.fire({
+    //       icon: 'error',
+    //       title: '無法取得用戶資料，請稍後再試',
+    //     })
+    //   }
+    // },
     handleSubmit(e) {
       const form = e.target
       const formData = new FormData(form)
