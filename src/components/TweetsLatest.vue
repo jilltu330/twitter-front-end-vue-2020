@@ -44,7 +44,7 @@
             <span class="btn-text">{{ tweet.replyCount }}</span>
           </span>
           <div class="btn-like">
-            <TweetLke :class="['btn-icon', tweet.isLiked && 'btn-red']" />
+            <TweetLke :class="['btn-icon', tweet.isLiked && 'btn-red']" @click.stop.prevent="addLiked(tweet.id)"/>
             <span class="btn-text">{{ tweet.likeCount }}</span>
           </div>
         </div>
@@ -79,6 +79,7 @@ export default {
       tweets: [],
       more: {},
       tweetReplyModal: false,
+      tweet: this.initialTweets
     }
   },
   methods: {
@@ -114,6 +115,19 @@ export default {
     },
     closetweetReplyModal() {
       this.tweetReplyModal = false
+    },
+    // TODO:確認按愛心與否
+    addLiked () {
+      this.tweet = {
+        ...this.tweet,
+        isLiked: true
+      }
+    },
+    deleteLiked () {
+      this.tweet = {
+        ...this.tweet,
+        isLiked: false
+      }
     },
   },
 }
