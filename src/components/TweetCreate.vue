@@ -52,8 +52,9 @@ export default {
 <style lang="scss" scoped>
 .tweet-create {
   position: relative;
+  width: 100%;
   height: 120px;
-  border-bottom: 0.063rem solid $popular-border;
+  border-bottom: 0.625rem solid $popular-border;
 }
 textarea {
   width: 100%;

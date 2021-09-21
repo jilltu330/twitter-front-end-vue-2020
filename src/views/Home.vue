@@ -115,8 +115,6 @@ export default {
 .home-center-tweet {
   width: 100%;
   height: 120px;
-  // background-color: black;
-  border-bottom: 0.625rem solid $popular-border;
 }
 
 .home-center-tweets {
@@ -124,7 +122,6 @@ export default {
   overflow-y: scroll;
 }
 
-//scrollbar樣式crad list與form panel可共用
 .scrollbar {
   padding-left: 6px;
   // 整體的樣式
