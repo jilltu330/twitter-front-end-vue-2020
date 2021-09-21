@@ -2,10 +2,16 @@
   <div id="popular">
     <span class="popular-title">Popular</span>
     <div class="popular-user-list" v-for="user in users" :key="user.id">
-      <img :src="user.avatar" alt="userAvatar" />
+      <router-link :to="{ name: 'profile', params: { id: user.id } }">
+        <img :src="user.avatar" alt="userAvatar" />
+      </router-link>
       <div class="popular-user-list-ceneter">
-        <p class="user-name">{{ user.name }}</p>
-        <p class="user-account">{{ user.account }}</p>
+        <router-link :to="{ name: 'profile', params: { id: user.id } }">
+          <p class="user-name">{{ user.name }}</p>
+        </router-link>
+        <router-link :to="{ name: 'profile', params: { id: user.id } }">
+          <p class="user-account">{{ user.account }}</p>
+        </router-link>
       </div>
       <button
         :class="['btn', user.isFollowed && 'btn-orange']"
