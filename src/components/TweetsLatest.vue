@@ -1,16 +1,21 @@
 <template>
   <div id="tweetslatest">
     <div class="tweet-list" v-for="tweet in initialTweets" :key="tweet.id">
-      <router-link :to="{ name: 'user', params: { id: tweet.UserId } }">
+      <router-link :to="{ name: 'profile', params: { id: tweet.UserId } }">
         <img :src="tweet.avatar" alt="userAvatar" />
       </router-link>
       <div class="tweet-list-content">
         <div class="user-details">
-          <router-link :to="{ name: 'user', params: { id: tweet.UserId } }">
+          <router-link :to="{ name: 'profile', params: { id: tweet.UserId } }">
             <span class="user-name">{{ tweet.name }}</span>
           </router-link>
-          <span class="user-detail">
-            {{ tweet.account }}•{{
+          <router-link :to="{ name: 'profile', params: { id: tweet.UserId } }">
+            <span class="user-account">
+              {{ tweet.account }}
+            </span>
+          </router-link>
+          <span class="time">
+            •{{
               isToday(tweet.createdAt)
                 ? fromNow(utcOffset(tweet.createdAt))
                 : timeFormat(utcOffset(tweet.createdAt), 'MM月DD日')
@@ -31,8 +36,11 @@
             <span>{{ tweet.replyCount }}</span>
           </div> -->
           <span class="btn-reply cursor-pointer" @click="showtweetReplyModal">
-            <TweetReply class="btn-icon"/>
-            <TweetReplyModal v-show="tweetReplyModal" @close="closetweetReplyModal" />
+            <TweetReply class="btn-icon" />
+            <TweetReplyModal
+              v-show="tweetReplyModal"
+              @close="closetweetReplyModal"
+            />
             <span class="btn-text">{{ tweet.replyCount }}</span>
           </span>
           <div class="btn-like">
@@ -124,18 +132,22 @@ export default {
     border-radius: 50px;
   }
 }
-.user-name {
-  font-size: 15px;
-  font-weight: 700;
-  color: $main-text;
-  margin-right: 0.313rem;
-}
-.user-detail {
-  font-size: 15px;
-  font-weight: 500;
-  color: $input-placeholder;
-}
 
+.user-details {
+  align-items: center;
+  .user-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: $main-text;
+    margin-right: 0.313rem;
+  }
+  .time,
+  .user-account {
+    font-size: 15px;
+    font-weight: 500;
+    color: $input-placeholder;
+  }
+}
 .user-tweet {
   margin: 0.375rem 0 0.625rem;
   color: $main-text;
