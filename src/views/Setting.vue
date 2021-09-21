@@ -109,12 +109,15 @@ export default {
   },
   data() {
     return {
-      account: '',
-      name: '',
-      email: '',
-      password: '',
-      checkPassword: '',
+      user: {
+        account: '',
+        name: '',
+        email: '',
+        password: '',
+        checkPassword: '',
+      },
       isProcessing: false,
+
     }
   },
   created() {
@@ -126,14 +129,14 @@ export default {
     },
     // async fetchUser() {
     //  try {
-    //     const { id, account, name, email } = this.currentUser;
-    //     this.currentUser = {
-    //     ...this.currentUser,
-    //     id,
-    //     account,
-    //     name,
-    //     email,
-    //   };
+    //     const data = await userAPI.getUserDetail({
+    //       account: this.account,
+    //       name: this.name,
+    //       email: this.email,
+    //       password: this.password,
+    //       checkPassword: this.checkPassword,
+    //     })
+
     //   } catch (error) {
     //     Toast.fire({
     //       icon: 'error',

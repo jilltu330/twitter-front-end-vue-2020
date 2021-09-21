@@ -13,11 +13,11 @@ export default {
   //     headers: { Authorization: `Bearer ${getToken()}` },
   //   })
   // },
-  updateUserSetting({ user_id, formData }) {
-    return apiHelper.put(`/users/${user_id}/setting`, formData, {
-      headers: { Authorization: `Bearer ${getToken()}` },
-    })
-  },
+  // updateUserSetting({ user_id, formData }) {
+  //   return apiHelper.put(`/users/${user_id}/setting`, formData, {
+  //     headers: { Authorization: `Bearer ${getToken()}` },
+  //   })
+  // },
   // addFollowed({ userId }) {
   //   return apiHelper.post(`/following/${userId}`, null, {
   //     headers: { Authorization: `Bearer ${getToken()}` },
