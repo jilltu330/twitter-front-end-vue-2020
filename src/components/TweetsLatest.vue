@@ -39,7 +39,7 @@
           </span>
           <div class="btn-like">
             <TweetLke
-              :class="['btn-icon', tweet.isLiked && 'btn-red']"
+              :isActive="tweet.isLiked"
               @click.stop.prevent="addLiked(tweet.id)"
             />
             <span class="btn-text">{{ tweet.likeCount }}</span>
