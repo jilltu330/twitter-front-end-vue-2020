@@ -21,20 +21,19 @@
           <!-- 推文內容 -->
           <div class="tweet-content">
             <div class="tweet-content-avatar">
-              <img
-                :src="tweet.avatar"
-                alt="avatar"
-              />
+              <img :src="tweet.avatar" alt="avatar" />
             </div>
             <div class="tweet-content-detail">
               <div class="tweet-content-user">
                 <span class="user-name">{{ tweet.name }}</span>
                 <span class="user-account">{{ tweet.account }}</span>
-                <span class="time">・{{
-                  isToday(tweet.createdAt)
-                    ? fromNow(utcOffset(tweet.createdAt))
-                    : timeFormat(utcOffset(tweet.createdAt), 'MM月DD日')
-                }}</span>
+                <span class="time"
+                  >・{{
+                    isToday(tweet.createdAt)
+                      ? fromNow(utcOffset(tweet.createdAt))
+                      : timeFormat(utcOffset(tweet.createdAt), 'MM月DD日')
+                  }}</span
+                >
               </div>
               <div class="tweet-content-description">
                 {{ tweet.description }}
@@ -80,7 +79,18 @@ export default {
   mixins: [fromNowFilter],
   name: 'TweetCreateModal',
   props: {
-    tweet: Object,
+    tweet: {
+      type: Object,
+      default() {
+        return {
+          name: '',
+          account: '',
+          avatar: '',
+          createdAt: '',
+          description: '',
+        }
+      },
+    },
   },
   data() {
     return {

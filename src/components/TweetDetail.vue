@@ -1,57 +1,98 @@
 <template>
-  <div id="tweetdetail">
+  <div id="tweetdetail" v-if="Object.keys(tweet).length !== 0">
     <div class="tweet-header">
       <router-link :to="{ name: 'profile', params: { id: tweet.UserId } }">
-      <img
-        :src="tweet.User.avatar"
-        alt="avatar"
-      />
+        <img :src="tweet.User.avatar" alt="avatar" />
       </router-link>
       <div class="user-detail">
         <router-link :to="{ name: 'profile', params: { id: tweet.UserId } }">
-        <span class="user-name">{{ tweet.User.name }}</span></router-link>
+          <span class="user-name">{{ tweet.User.name }}</span></router-link
+        >
         <router-link :to="{ name: 'profile', params: { id: tweet.UserId } }">
-        <span class="user-account">{{ tweet.User.account }}</span></router-link>
+          <span class="user-account">{{
+            tweet.User.account
+          }}</span></router-link
+        >
       </div>
     </div>
     <div class="tweet-text">
       {{ tweet.description }}
     </div>
     <div class="tweet-detail">
-      <!-- TODO:待確認時間顯示 -->
       <span>
-        •{{
+        {{
           isToday(tweet.createdAt)
             ? fromNow(utcOffset(tweet.createdAt))
-            : timeFormat(utcOffset(tweet.createdAt), 'MM月DD日')
+            : timeFormat(utcOffset(tweet.createdAt), 'A hh:MM•YYYY年MM月DD日')
         }}
       </span>
     </div>
     <div class="tweet-text-detail">
-      <span class="reply"> <span class="reply-count">{{ tweet.replyCount }}</span> 回覆</span>
-      <span class="like"> <span class="like-count">{{ tweet.likeCount }}</span> 喜歡次數</span>
+      <span class="reply">
+        <span class="reply-count">{{ tweet.replyCount }}</span> 回覆</span
+      >
+      <span class="like">
+        <span class="like-count">{{ tweet.likeCount }}</span> 喜歡次數</span
+      >
     </div>
     <div class="btn btn-control">
-      <div class="btn-reply">
-        <img class="reply-icon" src="@/assets/svg/reply-lg.svg"/>
+      <div class="btn-reply" @click="showtweetReplyModal">
+        <img class="reply-icon" src="@/assets/svg/reply-lg.svg" />
       </div>
       <div class="btn-like">
-        <img class="like-icon" src="@/assets/svg/like-lg.svg"/>
+        <img class="like-icon" src="@/assets/svg/like-lg.svg" />
       </div>
     </div>
+    <TweetReplyModal
+      :tweet="replyData"
+      v-if="isShowModal"
+      @close="modalClose"
+      @submit="replySubmit"
+    />
   </div>
 </template>
 
 <script>
 import { fromNowFilter } from './../utils/mixins'
+import TweetReplyModal from '@/components/TweetReplyModal.vue'
 
 export default {
   mixins: [fromNowFilter],
+  components: {
+    TweetReplyModal,
+  },
+  data() {
+    return {
+      isShowModal: false,
+    }
+  },
   props: {
     tweet: {
       type: Object,
       required: true,
     },
+  },
+  computed: {
+    replyData() {
+      if(Object.keys(this.tweet).length === 0) return {}
+      const { User, ...data } = this.tweet
+      return {
+        name: User.name,
+        account: User.account,
+        avatar: User.avatar,
+        ...data
+      }
+    },
+  },
+  methods: {
+    showtweetReplyModal() {
+      console.log('test')
+      this.isShowModal = true
+    },
+    modalClose() {
+      this.isShowModal = false
+    },
+    replySubmit() {},
   },
 }
 </script>
@@ -118,7 +159,8 @@ export default {
     line-height: 27.51px;
     color: $input-placeholder;
   }
-  .reply-count, .like-count {
+  .reply-count,
+  .like-count {
     font-weight: 700;
     line-height: 28px;
     color: $modal-body-bg;
