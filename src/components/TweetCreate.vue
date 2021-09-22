@@ -30,17 +30,9 @@ export default {
     },
   },
   methods: {
-    // showModal() {
-    //   this.isModalVisible = true
-    // },
-    // closeModal() {
-    //   this.isModalVisible = false
-    // },
     handleSubmit () {
-      // TODO: 向 API 發送 POST 請求
-      // 伺服器新增 Comment 成功後...
       this.$emit('after-create-tweet', {
-        tweetId: uuidv4(), // 尚未串接 API 暫時使用隨機的 id
+        UserId: this.id,
         description: this.description
       })
       this.description = '' // 將表單內的資料清空

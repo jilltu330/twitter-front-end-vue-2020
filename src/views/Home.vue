@@ -67,9 +67,9 @@ export default {
         const { data } = await tweetsAPI.getTweets()
         this.tweets = data
       } catch (error) {
-         Toast.fire({
+        Toast.fire({
           icon: 'error',
-          title: '無法取得推文，請稍後再試'
+          title: '無法取得推文，請稍後再試',
         })
       }
     },
@@ -81,7 +81,11 @@ export default {
     },
     afterCreateTweet(payload) {
       const { tweetId, description } = payload
-      this.tweets.push({
+      this.handleCreateTweet({
+         UserId: tweetId,
+         description: description
+      })
+      this.tweets.unshift({
         id: tweetId,
         User: {
           id: this.currentUser.id,
@@ -93,6 +97,21 @@ export default {
         createdAt: new Date(),
         updatedAt: new Date(),
       })
+    },
+    async handleCreateTweet({ UserId, description }) {
+      try {
+        const { data } = await tweetsAPI.postTweet({ UserId, description })
+
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+      } catch (error) {
+
+        Toast.fire({
+          icon: 'error',
+          title: '無法取得推文，請稍後再試',
+        })
+      }
     },
   },
 }
