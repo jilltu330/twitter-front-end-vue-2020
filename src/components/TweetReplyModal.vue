@@ -1,6 +1,6 @@
 <template>
-  <transition name="modal-fade">
-    <div class="modal-backdrop">
+  <div class="modal-backdrop">
+    <transition name="modal-fade">
       <div
         class="modal"
         role="dialog"
@@ -22,24 +22,26 @@
           <div class="tweet-content">
             <div class="tweet-content-avatar">
               <img
-                src="https://lh3.googleusercontent.com/a-/AOh14GjafILfVnBhDBrtDk_r4kLz4q4tpPhwo7pPWwGo=s96-c"
-                alt=""
+                :src="tweet.avatar"
+                alt="avatar"
               />
             </div>
             <div class="tweet-content-detail">
               <div class="tweet-content-user">
-                <span class="user-name">name</span>
-                <span class="user-account">@account</span>
-                <span class="time">時間</span>
+                <span class="user-name">{{ tweet.name }}</span>
+                <span class="user-account">{{ tweet.account }}</span>
+                <span class="time">・{{
+                  isToday(tweet.createdAt)
+                    ? fromNow(utcOffset(tweet.createdAt))
+                    : timeFormat(utcOffset(tweet.createdAt), 'MM月DD日')
+                }}</span>
               </div>
               <div class="tweet-content-description">
-                Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis
-                ullamco cillum dolor. Voluptate exercitation incididunt aliquip
-                deserunt reprehenderit elit laborum.
+                {{ tweet.description }}
               </div>
               <div class="tweet-account">
                 回覆給
-                <span class="reply-tweet-account">@帳號</span>
+                <span class="reply-tweet-account">{{ tweet.account }}</span>
               </div>
             </div>
           </div>
@@ -47,40 +49,56 @@
           <div class="reply-content">
             <div class="modal-input">
               <section class="modal-create-reply">
-                <textarea placeholder="推你的回覆" rows="4"></textarea>
+                <textarea
+                  placeholder="推你的回覆"
+                  rows="4"
+                  v-model="replyContent"
+                ></textarea>
                 <img
                   src="https://lh3.googleusercontent.com/a-/AOh14GjafILfVnBhDBrtDk_r4kLz4q4tpPhwo7pPWwGo=s96-c"
                   class="avatar"
                   alt="avatar"
                 />
-                <button class="btn">回覆</button>
+                <div class="d-flex justify-content-end">
+                  <button class="btn" type="submit" @click.prevent="submit">
+                    回覆
+                  </button>
+                </div>
               </section>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </transition>
+    </transition>
+  </div>
 </template>
 
 <script>
+import { fromNowFilter } from '../utils/mixins'
+
 export default {
+  mixins: [fromNowFilter],
   name: 'TweetCreateModal',
   props: {
-    //TODO: 確認當前使用者頭貼
-    // currentUser: {
-    //   type: Object,
-    //   required: true,
-    // },
+    tweet: Object,
   },
   data() {
     return {
-      // profile: this.initialProfile,
+      replyContent: '',
     }
   },
   methods: {
     close() {
       this.$emit('close')
+    },
+    submit() {
+      console.log('test')
+      this.$emit('submit', {
+        id: this.tweet.id,
+        form: {
+          reply: this.replyContent,
+        },
+      })
     },
   },
 }
@@ -96,7 +114,6 @@ export default {
   transition: opacity 0.5s ease;
 }
 
-//TODO:確認背景色問題
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -147,17 +164,28 @@ export default {
 
 .tweet-content {
   position: relative;
-  img {
-    position: absolute;
-    width: 50px;
-    height: 50px;
+  display: flex;
+  .tweet-content-avatar {
+    display: flex;
+    flex-direction: column;
     margin-right: 0.625rem;
-    border-radius: 50px;
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50px;
+    }
+    &::after {
+      content: '';
+      width: 2px;
+      height: 100%;
+      margin: 5px auto;
+      display: block;
+      background-color: $reply-modal-connect-line;
+    }
   }
 }
 
 .tweet-content-detail {
-  padding-left: 65px;
   .user-name {
     font-size: 15px;
     font-weight: 700;
@@ -213,11 +241,7 @@ textarea {
   font-family: 'Noto Sans TC';
 }
 
-//TODO:確認輸入框離按鈕太近問題
 .btn {
-  position: absolute;
-  bottom: 15px;
-  right: 15px;
   padding: 0.625rem 0.938rem;
   font-family: inherit;
   font-size: 18px;

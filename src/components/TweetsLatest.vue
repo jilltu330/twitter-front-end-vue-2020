@@ -30,26 +30,29 @@
           </div>
         </router-link>
         <div class="btn btn-control">
-          <!-- <div class="btn-reply">
-            <TweetReply class="btn-icon"/>
-            <TweetReplyModal v-show="tweetReplyModal" @close="closeModal" />
-            <span>{{ tweet.replyCount }}</span>
-          </div> -->
-          <span class="btn-reply cursor-pointer" @click="showtweetReplyModal">
+          <span
+            class="btn-reply cursor-pointer"
+            @click="showtweetReplyModal(tweet)"
+          >
             <TweetReply class="btn-icon" />
-            <TweetReplyModal
-              v-show="tweetReplyModal"
-              @close="closetweetReplyModal"
-            />
             <span class="btn-text">{{ tweet.replyCount }}</span>
           </span>
           <div class="btn-like">
-            <TweetLke :class="['btn-icon', tweet.isLiked && 'btn-red']" @click.stop.prevent="addLiked(tweet.id)"/>
+            <TweetLke
+              :class="['btn-icon', tweet.isLiked && 'btn-red']"
+              @click.stop.prevent="addLiked(tweet.id)"
+            />
             <span class="btn-text">{{ tweet.likeCount }}</span>
           </div>
         </div>
       </div>
     </div>
+    <TweetReplyModal
+      :tweet="modalData"
+      v-if="Object.keys(modalData).length !== 0"
+      @close="modalClose"
+      @submit="replySubmit"
+    />
   </div>
 </template>
 
@@ -78,8 +81,7 @@ export default {
     return {
       tweets: [],
       more: {},
-      tweetReplyModal: false,
-      tweet: this.initialTweets
+      modalData: {},
     }
   },
   methods: {
@@ -110,23 +112,28 @@ export default {
         ? description.slice(0, 139) + '...'
         : description
     },
-    showtweetReplyModal() {
-      this.tweetReplyModal = true
+    showtweetReplyModal(tweet) {
+      this.modalData = tweet
     },
-    closetweetReplyModal() {
-      this.tweetReplyModal = false
+    modalClose() {
+      this.modalData = {}
+    },
+    replySubmit(formData) {
+      console.log(formData)
+      // ...api
+      this.modalClose()
     },
     // TODO:確認按愛心與否
-    addLiked () {
+    addLiked() {
       this.tweet = {
         ...this.tweet,
-        isLiked: true
+        isLiked: true,
       }
     },
-    deleteLiked () {
+    deleteLiked() {
       this.tweet = {
         ...this.tweet,
-        isLiked: false
+        isLiked: false,
       }
     },
   },
