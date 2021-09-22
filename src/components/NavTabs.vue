@@ -12,8 +12,7 @@
         {{ plainText }}
       </template>
     </h2>
-    <!-- TODO:確認推文顯示原因 -->
-    <template v-if="user">
+    <template v-if="user.name">
       <div class="user-title">
         <span class="name">{{ user.name }}</span>
         <span class="tweetCount">{{ user.tweetCount }}&ensp;推文</span>
