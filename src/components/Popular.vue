@@ -16,7 +16,7 @@
       <button
         :class="['btn', user.isFollowed && 'btn-orange']"
         type="submit"
-        @click.stop.prevent="deleteFollowed(user.id)"
+        @click.stop.prevent="deleteFollowed(user)"
       >
         {{ user.isFollowed ? '正在跟隨' : '跟隨' }}
       </button>
@@ -49,10 +49,12 @@ export default {
         })
       }
     },
-    deleteFollowed(userId) {
+    deleteFollowed(user) {
+      const { id, isFollowed } = user
+      this.handleFollow(isFollowed, id)
       this.users = this.users
         .map((user) => {
-          if (user.id !== userId) {
+          if (user.id !== id) {
             return user
           }
           return {
@@ -62,6 +64,29 @@ export default {
           }
         })
         .sort((a, b) => b.FollowedCount - a.FollowedCount)
+    },
+    async handleFollow(isFollowed, id) {
+      try {
+        if (isFollowed === true) {
+          let {data} = await userAPI.deleteFollowed({id})
+
+          if (data.status === 'error') {
+            throw new Error(data.message)
+          }
+          
+        } else {
+          let {data} = await userAPI.addFollowed({id})
+
+          if (data.status === 'error') {
+            throw new Error(data.message)
+          }
+        }
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          title: '無法取得追蹤，請稍後再試',
+        })
+      }
     },
   },
 }

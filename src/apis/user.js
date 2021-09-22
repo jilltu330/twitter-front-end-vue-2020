@@ -1,5 +1,4 @@
 import { apiHelper } from './../utils/helpers'
-import axios from 'axios'
 const getToken = () => localStorage.getItem('token')
 
 export default {
@@ -20,14 +19,24 @@ export default {
   //   })
   // },
   addFollowed({ id }) {
-    return axios.post(
-      'https://good-simple-twitter.herokuapp.com/followships',
-      JSON.stringify({ id }),
-      { headers: { Authorization: `Bearer ${getToken()}` } }
+    return apiHelper.post(
+      '/followships',
+      { id },
+      {
+        headers: { Authorization: `Bearer ${getToken()}` },
+      }
     )
   },
   deleteFollowed({ id }) {
-    return apiHelper.delete(`/followships/${id}`, null, {
+    return apiHelper.delete(`/followships/${id}`, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    })
+  },
+  getCurrentUsers() {
+    console.log(getToken())
+    return apiHelper.get('/current_user', null, {
       headers: { Authorization: `Bearer ${getToken()}` },
     })
   },
